@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import os
 
 buffer = []
 rowCounter = 1
@@ -12,6 +13,10 @@ boardMembersKRS = pd.read_excel('SMpolska.xls', sheet_name='CzlonkowieZarzadu', 
 
 relationKRS = set(indexKRS['Członkowie Zarządu']).intersection(
     boardMembersKRS['Członkowie Zarządu'])
+
+if os.path.exists('bufor.json'):
+    with open('bufor.json', 'r', encoding='utf-8') as f:
+        temp = json.load(f)
 
 for numberKRS in relationKRS:
     rows = boardMembersKRS[boardMembersKRS['Członkowie Zarządu'] == numberKRS]
