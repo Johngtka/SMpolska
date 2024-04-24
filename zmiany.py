@@ -1,28 +1,27 @@
 import pandas as pd
 import json
 
-df1 = pd.read_excel('SMpolska.xls', sheet_name='Index', dtype={
-                    'Członkowie Zarządu': str})
+buffer = []
+rowCounter = 1
 
-df2 = pd.read_excel('SMpolska.xls', sheet_name='CzlonkowieZarzadu', dtype={
-                    'Członkowie Zarządu': str})
+indexKRS = pd.read_excel('SMpolska.xls', sheet_name='Index', dtype={
+    'Członkowie Zarządu': str})
 
-numery_krs = set(df1['Członkowie Zarządu']).intersection(
-    df2['Członkowie Zarządu'])
+boardMembersKRS = pd.read_excel('SMpolska.xls', sheet_name='CzlonkowieZarzadu', dtype={
+    'Członkowie Zarządu': str})
 
-licznik_wierszy = 1
-bufor = []
+relationKRS = set(indexKRS['Członkowie Zarządu']).intersection(
+    boardMembersKRS['Członkowie Zarządu'])
 
-for numer_krs in numery_krs:
-    wiersze = df2[df2['Członkowie Zarządu'] == numer_krs]
+for numberKRS in relationKRS:
+    rows = boardMembersKRS[boardMembersKRS['Członkowie Zarządu'] == numberKRS]
 
-    for _, wiersz in wiersze.iterrows():
-        print(f'Wiersz {licznik_wierszy}:')
-        print(wiersz)
+    for _, row in rows.iterrows():
+        print(f'Wiersz {rowCounter}:')
+        print(row)
         print('\n')
-        licznik_wierszy += 1
-
-        bufor.append(wiersz.to_dict())
+        rowCounter += 1
+        buffer.append(row.to_dict())
 
 with open('bufor.json', 'a', encoding='utf-8') as f:
-    json.dump(bufor, f, ensure_ascii=False, indent=4)
+    json.dump(buffer, f, ensure_ascii=False, indent=4)
