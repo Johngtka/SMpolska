@@ -22,11 +22,12 @@ for numberKRS in relationKRS:
     rows = boardMembersKRS[boardMembersKRS['Członkowie Zarządu'] == numberKRS]
 
     for _, row in rows.iterrows():
+        rowDict = row.to_dict()
         print(f'Wiersz {rowCounter}:')
         print(row)
         print('\n')
         rowCounter += 1
-        buffer.append(row.to_dict())
+        buffer.append(rowDict)
 
 with open('bufor.json', 'a', encoding='utf-8') as bufferFileSave:
     json.dump(buffer, bufferFileSave, ensure_ascii=False, indent=4)
