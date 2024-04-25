@@ -15,8 +15,8 @@ relationKRS = set(indexKRS['Członkowie Zarządu']).intersection(
     boardMembersKRS['Członkowie Zarządu'])
 
 if os.path.exists('bufor.json'):
-    with open('bufor.json', 'r', encoding='utf-8') as f:
-        temp = json.load(f)
+    with open('bufor.json', 'r', encoding='utf-8') as bufferFileRead:
+        temp = json.load(bufferFileRead)
 
 for numberKRS in relationKRS:
     rows = boardMembersKRS[boardMembersKRS['Członkowie Zarządu'] == numberKRS]
@@ -28,5 +28,5 @@ for numberKRS in relationKRS:
         rowCounter += 1
         buffer.append(row.to_dict())
 
-with open('bufor.json', 'a', encoding='utf-8') as f:
-    json.dump(buffer, f, ensure_ascii=False, indent=4)
+with open('bufor.json', 'a', encoding='utf-8') as bufferFileSave:
+    json.dump(buffer, bufferFileSave, ensure_ascii=False, indent=4)
