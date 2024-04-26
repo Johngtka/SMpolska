@@ -1,6 +1,9 @@
-import pandas as pd
-import json
 import os
+import json
+import smtplib
+import pandas as pd
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 buffer = []
 rowCounter = 1
@@ -13,6 +16,21 @@ boardMembersKRS = pd.read_excel('SMpolska.xls', sheet_name='CzlonkowieZarzadu', 
 
 relationKRS = set(indexKRS['Członkowie Zarządu']).intersection(
     boardMembersKRS['Członkowie Zarządu'])
+
+
+def send_email(subject, message, to):
+    msg = MIMEMultipart()
+    msg['From'] = 'sender-email@gmail.com'
+    msg['To'] = to
+    msg['Subject'] = subject
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp-domain.com', 000)
+    server.starttls()
+    server.login(msg['From'], 'sender-password')
+    server.send_message(msg)
+    server.quit()
+
 
 if os.path.exists('bufor.json'):
     with open('bufor.json', 'r', encoding='utf-8') as bufferFileRead:
